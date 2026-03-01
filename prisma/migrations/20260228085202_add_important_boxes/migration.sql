@@ -1,0 +1,9 @@
+-- CreateTable
+CREATE TABLE "ImportantBox" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "pageSlug" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

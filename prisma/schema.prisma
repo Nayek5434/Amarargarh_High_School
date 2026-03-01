@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model SiteSettings {
+  id               Int      @id @default(1)
+  schoolName       String
+  tagline          String
+  address          String
+  phone            String
+  email            String
+  principalMessage String
+  updatedAt        DateTime @updatedAt
+}
+
+model AdminCredential {
+  id           Int      @id @default(1)
+  loginId      String   @unique
+  passwordHash String
+  failedAttempts Int    @default(0)
+  recoveryUnlocked Boolean @default(false)
+  sessionNonce String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Page {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  title     String
+  content   String
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  eventDate   DateTime
+  description String
+  createdAt   DateTime @default(now())
+
+  @@index([eventDate])
+}
+
+model Notice {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  targetClass String   @default("ALL")
+  publishedAt DateTime @default(now())
+
+  @@index([publishedAt])
+  @@index([targetClass, publishedAt])
+}
+
+model MagazinePost {
+  id          Int      @id @default(autoincrement())
+  title       String
+  category    String
+  content     String
+  author      String?
+  publishedAt DateTime @default(now())
+
+  @@index([category, publishedAt])
+}
+
+model ImportantBox {
+  id        Int      @id @default(autoincrement())
+  pageSlug  String
+  blockType String   @default("TEXT")
+  sortOrder Int      @default(0)
+  title     String
+  content   String
+  imageUrl  String?
+  lineItems String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([pageSlug, isActive, sortOrder])
+}
+
+model Teacher {
+  id              Int      @id @default(autoincrement())
+  name            String
+  designation     String
+  department      String
+  bio             String
+  photoUrl        String?
+  experienceYears Int?
+  email           String?
+  achievements    String?
+  createdAt       DateTime @default(now())
+
+  @@index([department, name])
+}
+
+model StudentAchievement {
+  id            Int      @id @default(autoincrement())
+  studentName   String
+  exam          String
+  rank          String
+  passedOutYear Int
+  story         String
+  photoUrl      String?
+  createdAt     DateTime @default(now())
+
+  @@index([passedOutYear, studentName])
+}
